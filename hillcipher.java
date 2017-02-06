@@ -32,13 +32,42 @@ public class hillcipher{
         while(fileScanner.hasNext()){
             String temp = fileScanner.next();
             for(int i = 0; i < temp.length(); i++){
-                if(Chacter.isLetter(temp.charAt(i))){
-                    inputCharacters[index] = temp.charAt(i);
+                if(Character.isLetter(temp.charAt(i))){
+                    inputCharacters[index] = Character.toLowerCase(temp.charAt(i));
                     index++;
             }
         }
+        }
+
+        while(index % keyMatrix.length != 0){
+            inputCharacters[index] = 'x';
+            //System.out.println("X is being added!");
+            index++;
+        }
+        //System.out.println("Index is " + index);
         for(int i = 0; i < index; i++){
             System.out.print(inputCharacters[i]);
         }
+        System.out.println();
+        encrypt(keyMatrix, inputCharacters, index);
     }
+
+
+public static void encrypt(int[][] keyMatrix, char[] inputCharacters, int size) {
+    int index = 0;
+    while(index < size){
+    for(int i = 0; i < keyMatrix.length; i++){
+        int sum = 0;
+        for(int j = 0; j < keyMatrix.length; j++){
+                //System.out.printf("Sum is %d * %d and mod 26 is %d\n", keyMatrix[i][j], (int)inputCharacters[index + j] - 97, keyMatrix[i][j] * ((int)inputCharacters[index + j] - 97));
+                sum += keyMatrix[i][j] * (inputCharacters[index + j] -97); //Need to keep track of indicies...
+        }
+        //System.out.printf("Sum is %d\n", sum);
+        System.out.print((char)((sum % 26) + 97));
+        //System.out.println();
+    }
+    index += keyMatrix.length;
+}
+}
+
 }
