@@ -27,4 +27,4 @@ java hillcipher inkey3.txt infile2.txt
 
 echo "java hillcipher inkey3.txt infile3.txt"
 java hillcipher inkey3.txt infile3.txt
-
+ PAUSE
