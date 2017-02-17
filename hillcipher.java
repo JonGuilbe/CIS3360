@@ -2,6 +2,8 @@ import java.util.*;
 import java.nio.file.*;
 
 public class hillcipher {
+
+    int printIndex = 0;
     public static void main(String[] args) {
         Path keyPath = Paths.get(args[0]);
         Path filePath = Paths.get(args[1]);
@@ -10,7 +12,8 @@ public class hillcipher {
             keyScanner = new Scanner(keyPath);
             fileScanner = new Scanner(filePath);
             char[] inputCharacters = new char[10000];
-        } catch (Exception e) {
+        } catch (Exception e) { //Should never reach this!
+            System.out.println("Error: Could not open file(s)!");
             keyScanner = new Scanner(System.in);
             fileScanner = new Scanner(System.in);
         }
@@ -47,7 +50,12 @@ public class hillcipher {
         }
         for (int i = 0; i < index; i++) {
             System.out.print(inputCharacters[i]);
+            printIndex++;
+            if(printIndex % 80 == 0)
+                System.out.println();
+            printIndex = printIndex % 80;
         }
+        printIndex = 0;
         System.out.println();
         System.out.printf("\n\nCiphertext: \n\n");
         encrypt(keyMatrix, inputCharacters, index);
@@ -62,6 +70,9 @@ public class hillcipher {
                     sum += keyMatrix[i][j] * (inputCharacters[index + j] - 97);
                 }
                 System.out.print((char) ((sum % 26) + 97));
+                if(printIndex % 80 == 0)
+                    System.out.println();
+                printIndex = printIndex % 80;
             }
             index += keyMatrix.length;
         }
