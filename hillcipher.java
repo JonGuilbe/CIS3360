@@ -3,7 +3,7 @@ import java.nio.file.*;
 
 public class hillcipher {
 
-    int printIndex = 0;
+    static int printIndex = 0;
     public static void main(String[] args) {
         Path keyPath = Paths.get(args[0]);
         Path filePath = Paths.get(args[1]);
@@ -70,8 +70,9 @@ public class hillcipher {
                     sum += keyMatrix[i][j] * (inputCharacters[index + j] - 97);
                 }
                 System.out.print((char) ((sum % 26) + 97));
-                if(printIndex % 80 == 0)
-                    System.out.println();
+                printIndex++;
+                if(printIndex % 80 == 0){
+                    System.out.println();}
                 printIndex = printIndex % 80;
             }
             index += keyMatrix.length;

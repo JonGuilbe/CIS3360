@@ -3,7 +3,7 @@ import java.nio.file.*;
 
 public class crceck {
 
-    int crcPoly = 41043;
+    String crcPoly = "1010000001010011";
     public static void main(String[] args){
         String modeFlag = args[0];
         if(!modeFlag.equals("c") && !modeFlag.equals("v"));
@@ -35,12 +35,39 @@ public class crceck {
         return input;
     }
 
-    public static int xor(int number1, int number2){
-        return number1^number2;
+    public static int xor(Char bit1, Char bit2){
+        return bit1 == bit2;
     }
 
-    public static void crcCalculation(char[] data){
-        int runningResult = xor();
+    public static void crcCalculation(String input){
+        String currentResult = "";
+        for(int i = 0; i < 16; i++){
+            currentResult += input.charAt(i);
+        }
+        int index = 0, returnIndex = 0;
+        while(returnIndex + 16 < input.length()){
+            index = returnIndex;
+            boolean first1Found = false;
+            String newString = "";
+            for(int i = 0; i < 16; i++){
+                int toAdd = xor(currentResult.charAt(index + i), crcPoly.charAt(i)); //might need a seperate counter for the crcPoly...
+                if(!first1Found && toAdd == 0){
+                    index++; returnIndex++;
+                }
+                else
+                    first1Found = true;
+                    newString += toAdd;
+            }
+            int i = 1;
+            int returnIndexCopy = returnIndex;
+            while(returnIndexCopy != 0){
+                newString += input.charAt(index + i);
+                index++;
+                returnIndexCopy--; //Less shady
+            }
+            currentResult = newString;
+        }
+        System.out.println(Integer.decode(currentResult));
 
     }
 
