@@ -8,12 +8,40 @@ public class testCRC{
     public static void main(String[] args){
         Scanner stdin = new Scanner(System.in);
         String test = "";
-        //while(stdin.hasNextLine()){
-          //test += stdin.nextLine();
-          //System.out.println("Line read! Current length: " +  test.length());
-        //}
+        String[] rawInput = new String[8];
+        int inputLine = 0;
+        System.out.println("Issues?");
+        while(stdin.hasNextLine() || inputLine != 8){
+            rawInput[inputLine] = stdin.nextLine();
+            if(inputLine != 7 && rawInput[inputLine].length() != 64){
+                while(rawInput[inputLine].length() != 64){
+                    rawInput[inputLine] += '.';
+                    //System.out.println("a");
+                }
+            }
+            else if(inputLine == 7 && rawInput.length != 56){
+                while(rawInput[inputLine].length() != 56){
+                    rawInput[inputLine] += '.';
+                    //System.out.println("b");
+                }
+            }
+         //System.out.println("c");
+          test += rawInput[inputLine];
+          System.out.println(rawInput[inputLine]);
+          inputLine++;
+        }
+        while(inputLine < 7){
+            rawInput[inputLine] = "................................................................";
+            System.out.println(rawInput[inputLine]);
+            inputLine++;
+           //System.out.println("d");
+        }
+        if(rawInput[7] == null){
+            rawInput[7] = "........................................................";
+            //System.out.println("e");
+        }
 
-        test = stdin.nextLine();
+        //test = stdin.nextLine();
 
         int sum = 0;
         int xorSum = 0;
@@ -32,9 +60,9 @@ public class testCRC{
                 val <<= 1;
             }
         }
-        //for(int i = 0; i < 15; i++){
-          //input.append('0');
-        //}
+        for(int i = 0; i < 15; i++){
+          input.append('0');
+        }
 
 
         //System.out.println("Testing getBytes: " + input);
@@ -79,13 +107,15 @@ public class testCRC{
         }
         
         int index = 0, returnIndex = 0;
+        boolean visited[] = new boolean[8];
         while(inputCounter < input.length() - 15){
             index = 0;
             returnIndex = 0;
             boolean first1Found = false;
             String newString = "";
             int temp = Integer.parseInt(currentResult, 2);
-            /* if((inputCounter + 1) % 512 == 0) */    System.out.println("Current string: " + currentResult + " " + Integer.toString(temp,16));
+            //if((inputCounter + 1) % 512 == 0)
+                //System.out.println(rawInput[(inputCounter + 1) / 512] + " - 0000" + Integer.toString(temp,16));
             for(int i = 0; i < 16; i++){
                 //System.out.printf("i is %d index is %d and returnIndex is %d\n", i, index, returnIndex);
                 int toAdd = xor(currentResult.charAt(index), crcPoly.charAt(i)); //might need a seperate counter for the crcPoly...
@@ -93,13 +123,17 @@ public class testCRC{
                     index++; 
                     returnIndex++;
                     inputCounter++;
-                    /*if((inputCounter + 1) % 512 == 0) */   System.out.println("Current string: " + currentResult + " " + Integer.toString(temp,16));
+                    /*if((inputCounter + 1) % 512 == 0) */   //System.out.println("Current string: " + currentResult + " " + Integer.toString(temp,16));
                     //System.out.println("returnIndex getting incremented! Input counter at " + inputCounter + " & input length is at " + input.length());
                 }
                 else{
                     first1Found = true;
                     newString += toAdd;
                     index++;
+                }
+                if((inputCounter / 512)-1 != -1 && !visited[(inputCounter / 512)-1] && (inputCounter) % 512 == 0){
+                    visited[(inputCounter / 512)-1] = true;
+                    System.out.println(rawInput[((inputCounter) / 512)-1] + " - 0000" + Integer.toString(temp,16));
                 }
             }
             int i = 1;
@@ -112,7 +146,8 @@ public class testCRC{
             currentResult = newString;
         }
         int result = Integer.parseInt(currentResult, 2);
-        System.out.println(Integer.toString(result,16));
+        System.out.println(rawInput[7] + "0000" + Integer.toString(result,16) + " - 0000" + Integer.toString(result,16));
+        System.out.println("CRC15 Result: 0000" + Integer.toString(result,16));
     }
         public static int xor(char bit1, char bit2){
         if(bit1 == bit2)
