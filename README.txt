@@ -1,15 +1,3 @@
-The files in this archive have three extensions:
-1. *.plain // for a simple input file of various lengths
-           // NOTE that there are NO carriage returns, line feeds, or
-	   // newline characters in these files.
-2. *.crc   // the corresponding CRC file for its "plain" input
-3. And the README.txt file - which you are reading now...
-
-The files with the CRC extension have a valid CRC with ONE
-EXCEPTION - WS-BOGUS.crc which has an invalid CRC (for WS.plain).
-
-In the event that you'd like to change input data or the calculated CRC
-to something that is appropriately valid or invalid, REMEMBER to use
-a simple TEXT editor, such as Notepad, Notepad++, VIM, EMACS, or gedit,
-to modify the file's content.
-
+javac crcheck.java
+java crcheck
+This program is entirely my work and I have neither developed my code together with any another person, nor copied program code from any other person, nor permitted my code to be copied or otherwise used by any other person, nor have I copied, modified, or otherwise used program code that I have found in any external source, including but not limited to, online sources.
